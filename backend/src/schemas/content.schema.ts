@@ -1,4 +1,4 @@
-import {Schema, model} from "mongoose";
+import {InferSchemaType, Schema, model} from "mongoose";
 
 const contentSchema = new Schema({
     title: {
@@ -19,6 +19,8 @@ const contentSchema = new Schema({
     }
     
 })
+
+export type ContentSchemaType = InferSchemaType<typeof contentSchema>;
 
 
 const ContentModel = model("Content", contentSchema);
