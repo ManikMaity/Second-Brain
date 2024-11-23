@@ -3,9 +3,11 @@ import { PORT } from "./configs/server.config";
 import userRouter from "./routes/user.route";
 import contentRouter from "./routes/content.route";
 import connetDB from "./configs/db.config";
+import bodyParser from "body-parser";
 
 const app = express();
 app.use(express.json());
+app.use(bodyParser.json());
 
 app.get("/", (req, res) => {
   res.json({

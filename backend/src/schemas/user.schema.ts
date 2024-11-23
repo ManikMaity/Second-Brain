@@ -14,7 +14,14 @@ const userSchema = new Schema({
     type: String,
     required: [true, "Password is required"],
   },
-});
+}, {timestamps : true});
+
+export type MongooseUserType = {
+  _id : Schema.Types.ObjectId,
+  username : string,
+  password : string,
+  email : string
+}
 
 
 const UserModel = mongoose.model("User", userSchema);
