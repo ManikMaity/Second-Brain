@@ -8,10 +8,11 @@ const contentSchema = new Schema({
     link: {
         type: String,
     },
-    tags : [{
-        type: Schema.Types.ObjectId,
-        ref: "Tag"
-    }],
+    tags : {
+        type: [Schema.Types.ObjectId],
+        ref: "Tag",
+        default: []
+    },
     user : {
         type : Schema.Types.ObjectId,
         ref :  "User",
