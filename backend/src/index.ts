@@ -4,6 +4,7 @@ import userRouter from "./routes/user.route";
 import contentRouter from "./routes/content.route";
 import connetDB from "./configs/db.config";
 import bodyParser from "body-parser";
+import brainRouter from "./routes/barin.route";
 
 const app = express();
 app.use(express.json());
@@ -17,6 +18,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/content", contentRouter);
+app.use("/api/v1/brain", brainRouter);
 
 
 (async () => {

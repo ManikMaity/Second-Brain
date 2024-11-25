@@ -5,6 +5,10 @@ const contentSchema = new Schema({
         type: String,
         required: [true, "Title is required"],
     },
+    type : {
+        type : String,
+        required : [true, "Type is required"]
+    },
     link: {
         type: String,
     },
@@ -19,7 +23,7 @@ const contentSchema = new Schema({
         required : [true, "User is required"]
     }
     
-})
+}, {timestamps: true});
 
 export type ContentSchemaType = InferSchemaType<typeof contentSchema>;
 
