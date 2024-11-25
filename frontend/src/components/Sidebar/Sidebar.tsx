@@ -2,23 +2,22 @@ import { LuBrain, LuPanelLeftClose, LuPanelRightClose } from "react-icons/lu";
 import Button from "../Buttons/Button";
 import { FaFileVideo, FaHashtag, FaLink, FaTwitter } from "react-icons/fa6";
 import { IoDocumentText } from "react-icons/io5";
-import { useState } from "react";
 
-function Sidebar() {
-  const [closeSidebar, setCloseSidebar] = useState(false);
+function Sidebar(props : any) {
 
   return (
-    <div className="h-screen w-full bg-transparent">
-      {closeSidebar ? (
+    <div className="h-screen w-screen md:w-[20%] bg-transparent absolute top-0 left-0">
+      {props.closeSidebar ? (
         <Button
           text=""
-          onClick={() => setCloseSidebar(false)}
+          textHidden={true}
+          onClick={() => props.setCloseSidebar(false)}
           variant="secondary"
           customStyle={{ fontSize: "1.5rem", padding: "2px" }}
           startIcon={<LuPanelRightClose />}
         />
       ) : (
-        <div className={`h-screen w-full md:w-[20%] bg-gray-200 p-3 animate-slideOpen`}>
+        <div className={`h-screen w-full bg-gray-50 p-3 animate-slideOpen`}>
           <div className="flex gap-2 justify-between flex-nowrap ">
             <div className="flex gap-2 text-xl font-semibold text-black items-center justify-center">
               <LuBrain className="text-violet-500 text-3xl" />
@@ -27,7 +26,8 @@ function Sidebar() {
             <Button
               text=""
               variant="secondary"
-              onClick={() => setCloseSidebar(true)}
+              textHidden={true}
+              onClick={() => props.setCloseSidebar(true)}
               customStyle={{ fontSize: "1.5rem", padding: "2px" }}
               startIcon={<LuPanelLeftClose />}
             />

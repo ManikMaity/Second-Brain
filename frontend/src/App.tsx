@@ -1,25 +1,39 @@
-import { } from 'react';
-import './App.css'
-import ContentCard, { ContentCardProps } from './components/Cards/ContentCard';
-import Sidebar from './components/Sidebar/Sidebar';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import "./App.css";
+import Home from "./pages/home";
+import Signin from "./pages/signin";
+import Signup from "./pages/signup";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 function App() {
-
-  const exampleData: ContentCardProps = {
-    contentType: "video",
-    cardTitle: "Card Title is here is a very long title",
-    tags: ["computer", "html", "css", "typescript"],
-    createdAt: "2024-11-25T04:32:36.559Z",
-  };
-  
+  const queryClient = new QueryClient();
 
   return (
-    <div className='h-screen w-full bg-gray-100 p-4'>
-      {/* <Button text='Add Content' variant='primary' size='md' onClick={() => {alert("Hoi there")}} startIcon={<FaPlus />} endIcon={<IoMdShare />} /> */}
-      <Sidebar/>
-      <ContentCard {...exampleData}/>
-    </div>
-  )
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/signin" element={<Signin />} />
+        </Routes>
+        <ToastContainer
+          position="bottom-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"
+          transition:Bounce
+        />
+      </BrowserRouter>
+    </QueryClientProvider>
+  );
 }
 
-export default App
+export default App;

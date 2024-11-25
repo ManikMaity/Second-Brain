@@ -1,15 +1,17 @@
 import { FiTwitter } from "react-icons/fi";
 import Button from "../Buttons/Button";
 import { IoMdShare } from "react-icons/io";
-import { MdDeleteOutline, MdOndemandVideo } from "react-icons/md";
-import { getFormatedDate } from "../../utils/utils";
+import { MdDeleteOutline} from "react-icons/md";
+import { getFormatedDate, ytUrlToEmbed } from "../../utils/utils";
 import React from "react";
 import { IoDocumentTextOutline, IoLinkOutline } from "react-icons/io5";
+import { FaYoutube } from "react-icons/fa6";
 
 type ContentType = "doc" | "video" | "link" | "tweet";
 
 export interface ContentCardProps {
   contentType: ContentType;
+  link: string;
   cardTitle: string;
   tags: string[];
   createdAt?: string;
@@ -28,15 +30,15 @@ function ContentCard(props: ContentCardProps) {
         return <IoLinkOutline />;
         break;
       default:
-        return <MdOndemandVideo />;
+        return <FaYoutube />;
         break;
     }
   }
 
   return (
-    <div className="bg-white rounded-md min-h-[200px] w-[200px] text-gray-900 shadow-sm px-3 py-2">
+    <div className="bg-white rounded-md max-h-[400px] overflow-y-scroll overflow-x-hidden w-full md:w-[280px] border border-gray-300 gap-2 flex flex-col text-gray-900 shadow-sm px-3 py-2">
       <div className="flex justify-between items-center mb-2">
-        <div className="flex items-center text-sm justify-start gap-2 leading-none font-semibold">
+        <div className="flex items-center text-base justify-start gap-2 leading-none font-semibold">
           <div>{getIconFromType(props.contentType)}</div>
           <p>{props.cardTitle || "Card Title"}</p>
         </div>
@@ -56,6 +58,38 @@ function ContentCard(props: ContentCardProps) {
             textHidden={true}
           />
         </div>
+      </div>
+
+      <div className="w-full rounded-sm">
+        {props?.contentType === "video" && (
+          <iframe
+            className="w-full"
+            src={`${ytUrlToEmbed(props.link)}`}
+            title="YouTube video player"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
+          ></iframe>
+        )}
+
+        {props?.contentType === "tweet" && (
+          <blockquote className="twitter-tweet">
+            <a href={props.link.replace("x.com", "twitter.com")}></a>
+          </blockquote>
+        )}
+
+        {props?.contentType === "link" && (
+          <div className="flex gap-2 flex-col">
+            <p className="text-black font-bold">Link</p>
+            <a
+              href={`${props.link}`}
+              target="_blank"
+              className="text-violet-900 hover:underline"
+            >
+              {props?.link}
+            </a>
+          </div>
+        )}
       </div>
 
       {props?.tags.length > 0 && (

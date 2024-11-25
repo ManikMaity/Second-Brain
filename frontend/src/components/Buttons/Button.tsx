@@ -1,3 +1,5 @@
+import SpinnerLoader from "../Loaders/SpinnerLoader";
+
 type BtnVarients = "primary" | "secondary" | "ghost";
 type BtnSizeVarients = "sm" | "md" | "lg";
 
@@ -11,6 +13,8 @@ interface ButtonProps {
   customStyle? : object;
   contentPosition?: string;
   textHidden?: boolean;
+  disabled?: boolean;
+  loading?: boolean;
 }
 
 function getStyleClassForBtn(
@@ -41,7 +45,7 @@ function getStyleClassForBtn(
       customStyle += " p-1 text-sm";
     break;
     default:
-      customStyle += " px-6 py-3 text-base";
+      customStyle += " px-6 py-3 md:text-base";
       break;
   }
   return customStyle;
@@ -50,12 +54,14 @@ function getStyleClassForBtn(
 function Button(props: ButtonProps) {
   return (
     <button
+    type="button"
+      disabled={props?.disabled || props?.loading}
       style={props.customStyle}
       onClick={props.onClick}
-      className={`hover:bg-opacity-70 transition-all select-none flex flex-nowrap items-center justify-${props?.contentPosition || "center"} gap-3 rounded-md leading-none ${getStyleClassForBtn(props.variant, props.size || "md")}`}
+      className={`hover:bg-opacity-70 transition-all select-none ${props?.disabled && "opacity-50 cursor-not-allowed"} flex flex-nowrap items-center justify-${props?.contentPosition || "center"} gap-2 md:gap-3 rounded-md leading-none ${getStyleClassForBtn(props.variant, props.size || "md")}`}
     >
       {props?.startIcon && <div>{props.startIcon}</div>}
-      <p className={`${props.textHidden && "hidden"}`}>{props.text}</p>
+      <div className={`${props.textHidden && "hidden"}`}>{props?.loading ? <SpinnerLoader radius={6}/> : <p>{props.text}</p>}</div>
       {props?.endIcon && <div>{props.endIcon}</div>}
     </button>
   );
