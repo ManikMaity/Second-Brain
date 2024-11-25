@@ -6,7 +6,7 @@ import { IoDocumentText } from "react-icons/io5";
 function Sidebar(props : any) {
 
   return (
-    <div className="h-screen w-screen md:w-[20%] bg-transparent absolute top-0 left-0">
+    <div className="h-screen md:w-[20%] bg-transparent absolute top-0 left-0">
       {props.closeSidebar ? (
         <Button
           text=""

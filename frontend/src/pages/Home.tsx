@@ -54,7 +54,7 @@ function Home() {
               sidebarClosed ? "w-[100%]" : "w-[80%]"
             } p-6 bg-gray-200`}
           >
-            <div className="flex flex-col sm:flex-row justify-between h-[8%] sm:h-[6%] sm:items-center gap-2 mb-6">
+            <div className="flex flex-col sm:flex-row justify-between h-[12%] sm:h-[6%] sm:items-center gap-2 mb-6">
               <h1 className="font-bold text-2xl">All Notes</h1>
               <div className="flex gap-2">
                 <Button
@@ -78,7 +78,7 @@ function Home() {
               </div>
             </div>
     
-            <div className="w-full md:h-[92%] overflow-y-scroll gap-2 flex justify-center flex-wrap">
+            <div className="w-full h-auto md:h-[92%] overflow-y-scroll gap-2 flex justify-center flex-wrap">
               <ContentCard {...exampleData} />
               <ContentCard {...exampleData2} />
               <ContentCard {...exampleData3} />
