@@ -8,7 +8,9 @@ interface ButtonProps {
   startIcon?: React.ReactNode;
   endIcon?: React.ReactNode;
   onClick?: () => void;
-  customStyle? : object
+  customStyle? : object;
+  contentPosition?: string;
+  textHidden?: boolean;
 }
 
 function getStyleClassForBtn(
@@ -25,7 +27,7 @@ function getStyleClassForBtn(
       customStyle += "bg-indigo-200 text-indigo-900";
       break;
     case "ghost":
-      customStyle += "text-indigo-900";
+      customStyle += "text-gray-950 hover:bg-gray-300";
       break;
     default:
       customStyle += "bg-indigo-700 text-white";
@@ -33,13 +35,13 @@ function getStyleClassForBtn(
   }
   switch (btnSize) {
     case "lg":
-        customStyle += " px-10 py-4"
+        customStyle += " px-10 py-4 text-lg"
       break;
     case "sm" :
-      customStyle += " p-2"
+      customStyle += " p-1 text-sm";
     break;
     default:
-      customStyle += " px-8 py-3";
+      customStyle += " px-6 py-3 text-base";
       break;
   }
   return customStyle;
@@ -50,10 +52,10 @@ function Button(props: ButtonProps) {
     <button
       style={props.customStyle}
       onClick={props.onClick}
-      className={`hover:bg-opacity-70 transition-all flex flex-nowrap items-center justify-center gap-2 rounded-md leading-none ${getStyleClassForBtn(props.variant, props.size || "md")} items-center justify-center`}
+      className={`hover:bg-opacity-70 transition-all select-none flex flex-nowrap items-center justify-${props?.contentPosition || "center"} gap-3 rounded-md leading-none ${getStyleClassForBtn(props.variant, props.size || "md")}`}
     >
       {props?.startIcon && <div>{props.startIcon}</div>}
-      <p className="">{props.text}</p>
+      <p className={`${props.textHidden && "hidden"}`}>{props.text}</p>
       {props?.endIcon && <div>{props.endIcon}</div>}
     </button>
   );

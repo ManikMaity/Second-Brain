@@ -1,13 +1,23 @@
 import { } from 'react';
 import './App.css'
-import Button from './components/Buttons/Button';
-import { FaPlus } from "react-icons/fa6";
+import ContentCard, { ContentCardProps } from './components/Cards/ContentCard';
+import Sidebar from './components/Sidebar/Sidebar';
 
 function App() {
 
+  const exampleData: ContentCardProps = {
+    contentType: "video",
+    cardTitle: "Card Title is here is a very long title",
+    tags: ["computer", "html", "css", "typescript"],
+    createdAt: "2024-11-25T04:32:36.559Z",
+  };
+  
+
   return (
-    <div className='h-screen w-full '>
-      <Button text='Add a new' variant='primary' startIcon={<FaPlus />} />
+    <div className='h-screen w-full bg-gray-100 p-4'>
+      {/* <Button text='Add Content' variant='primary' size='md' onClick={() => {alert("Hoi there")}} startIcon={<FaPlus />} endIcon={<IoMdShare />} /> */}
+      <Sidebar/>
+      <ContentCard {...exampleData}/>
     </div>
   )
 }
