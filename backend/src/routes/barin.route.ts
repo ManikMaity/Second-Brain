@@ -6,7 +6,7 @@ import { linkShareSchema } from "../validations/content.validation";
 const brainRouter = Router();
 
 brainRouter.post("/share", zodValidate(linkShareSchema), authenticate, brainShareController);
-brainRouter.get("/:shareLink", authenticate, getBrainController);
+brainRouter.get("/:shareLink", getBrainController);
 
 
 export default brainRouter;

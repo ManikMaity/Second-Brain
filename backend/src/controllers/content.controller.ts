@@ -109,13 +109,22 @@ export async function brainShareController(
         success: true,
       });
     }
-  } catch (err) {
-    handleErrorResponse(err, res);
+  } catch (err : any) {
+    if (err.code == 11000){
+      res.status(409).json({
+        success : false,
+        message : "Link already exists",
+        error : err.message
+      })
+    }
+    else {
+      handleErrorResponse(err, res);
+    }
   }
 }
 
 export async function getBrainController(
-  req: RequestUserWithUser,
+  req: Request,
   res: Response
 ) {
   try {
