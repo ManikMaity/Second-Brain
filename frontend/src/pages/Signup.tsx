@@ -3,15 +3,14 @@ import { Link } from 'react-router-dom';
 import Input from '../components/Input/Input';
 import Button from '../components/Buttons/Button';
 import { toast } from 'react-toastify';
+import { useMutation } from 'react-query';
+import { signupService } from '../services/signupService';
+import { getErrorMessage } from '../utils/utils';
 
 const Signup = () => {
 
-    useEffect(() => {
-        setTimeout(() => {
-            toast.info("Hey there")
-        })
-    }, []);
-
+  
+    
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
@@ -26,6 +25,29 @@ const Signup = () => {
 
     const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setUsername(e.target.value);
+    }
+
+    const mutation = useMutation(signupService, {
+      onSuccess : (data) => {
+        console.log(data);
+        toast.success(data?.message || "Successful")
+        setUsername("");
+        setEmail("");
+        setPassword("");
+      },
+      onError :  (error) => {
+        console.log(error);
+        toast.error(getErrorMessage(error));
+      }
+    })
+
+
+    const handleSignup = () : void => {
+      mutation.mutate({
+        username,
+        email,
+        password
+      })
     }
 
 
@@ -60,7 +82,7 @@ const Signup = () => {
             <Input value={password} onChange={handlePasswordChange} inputType='password'  placeholder='Enter your password'/>
           </div>
 
-         <Button variant='primary' text="Signup" loading={false} customStyle={{width: '100%'}}/>
+         <Button variant='primary' onClick={handleSignup} loading={mutation.isLoading} text="Signup" customStyle={{width: '100%'}}/>
         </form>
 
          {/* Divider */}

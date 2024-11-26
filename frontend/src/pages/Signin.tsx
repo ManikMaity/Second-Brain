@@ -1,12 +1,20 @@
 import React, { useState } from 'react'
 import Input from '../components/Input/Input';
 import Button from '../components/Buttons/Button';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useMutation } from 'react-query';
+import { toast } from 'react-toastify';
+import { getErrorMessage } from '../utils/utils';
+import { signinService } from '../services/signinService';
+import useUserStore, { UserType } from '../store/useStore';
 
 function Signin() {
 
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
+    const navigator = useNavigate();
+    const { setUser } = useUserStore();
+
 
     const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setPassword(e.target.value);
@@ -14,6 +22,35 @@ function Signin() {
 
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(e.target.value);
+    }
+
+    const mutation = useMutation(signinService, {
+      onSuccess : (data) => {
+        console.log(data);
+        toast.success(data?.message || "Successful")
+        const storeData : UserType = {
+          token : data.data.token,
+          username: data.data.user.username,
+          email : data.data.user.email,
+          _id : data.data.user._id
+        }
+        setUser(storeData); 
+        setEmail("");
+        setPassword("")
+        navigator("/");
+      },
+      onError :  (error) => {
+        console.log(error);
+        toast.error(getErrorMessage(error));
+      }
+    })
+
+
+    const handleSignin = () : void => {
+      mutation.mutate({
+        email,
+        password
+      })
     }
 
 
@@ -41,7 +78,7 @@ function Signin() {
             <Input value={password} onChange={handlePasswordChange} inputType='password'  placeholder='Enter your password'/>
           </div>
 
-         <Button variant='primary' text="Signup" customStyle={{width: '100%'}}/>
+         <Button variant='primary' onClick={handleSignin} loading={mutation.isLoading} text="Signup" customStyle={{width: '100%'}}/>
         </form>
 
          {/* Divider */}

@@ -7,6 +7,7 @@ import Button from '../components/Buttons/Button';
 import { FaPlus } from 'react-icons/fa6';
 import { IoMdShare } from 'react-icons/io';
 import SpinnerLoader from '../components/Loaders/SpinnerLoader';
+import useUserStore from '../store/useStore';
 
 function Home() {
     const exampleData: ContentCardProps = {
@@ -35,6 +36,8 @@ function Home() {
     
       const [sidebarClosed, setSidebarClosed] = useState(false);
       const [openCreateModal, setOpenCreateModal] = useState(false);
+      const {user} = useUserStore();
+      console.log(user);
     
       function handleModelClose (){
         setOpenCreateModal(false);

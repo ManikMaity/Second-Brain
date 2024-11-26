@@ -20,3 +20,18 @@ export function ytUrlToEmbed(url: string): string {
 
   return url;
 }
+
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function getErrorMessage (error : any) : string{
+  const err = error?.response?.data;
+  if (Array.isArray(err?.error) && err?.error?.length > 0){
+    return err.error[0];
+  }
+  else if (err.message){
+    return err.message;
+  }
+  else {
+    return "Something went wrong";
+  }
+}
