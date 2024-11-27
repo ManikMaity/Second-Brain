@@ -1,8 +1,9 @@
 import React from "react";
 
-function SpinnerLoader({radius} : {radius?: number}) {
+function SpinnerLoader({radius, color} : {radius?: number, color?: string}) {
   return (
-    <div className={`animate-spin inline-block size-${radius || 6} border-[3px] border-current border-t-transparent text-white rounded-full`} role="status" aria-label="loading">
+    <div className="">
+    <div className={`w-${radius || 6} h-${radius || 6} border-4 border-[${color || "white"}] border-t-transparent rounded-full animate-spin`}></div>
   </div>
   );
 }

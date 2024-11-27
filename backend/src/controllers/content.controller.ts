@@ -13,7 +13,7 @@ export async function getContentController(
     //@ts-ignore
     const userId = req.user?._id;
 
-    const userContents = await ContentModel.find({ user: userId }).populate(
+    const userContents = await ContentModel.find({ user: userId }).sort({ createdAt: -1 }).populate(
       "user",
       "username"
     );

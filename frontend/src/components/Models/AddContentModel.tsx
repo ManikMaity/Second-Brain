@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import Input from "../Input/Input";
 import Button from "../Buttons/Button";
 import Select, { OptionObjectType } from "../SelectDropdown/Select";
-import { useMutation } from "react-query";
+import { QueryObserverResult, RefetchOptions, RefetchQueryFilters, useMutation } from "react-query";
 import addContentService from "../../services/addContentService";
 import { toast } from "react-toastify";
 import { getErrorMessage } from "../../utils/utils";
+function AddContentModel(props : {refresh : <TPageData>(options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined) => Promise<QueryObserverResult<any, unknown>>}) {
 
-function AddContentModel() {
 
   type ContentType = "link" | "tweet" | "video";
     const [title, setTitle] = useState("");
@@ -36,14 +36,15 @@ function AddContentModel() {
       onSuccess : (data) => {
         toast.success(data?.message || "Successful");
         clearAllData();
+        props.refresh();
       },
       onError :  (error) => {
         toast.error(getErrorMessage(error));
       }
     })
 
-    function handleContentSubmit() {
-      mutation.mutate({title, link, type : contentType})
+    async function handleContentSubmit() {
+      mutation.mutate({title, link, type : contentType});
     }
 
     const optionsData : OptionObjectType[] = [

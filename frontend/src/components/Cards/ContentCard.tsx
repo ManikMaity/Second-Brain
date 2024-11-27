@@ -2,22 +2,30 @@ import { FiTwitter } from "react-icons/fi";
 import Button from "../Buttons/Button";
 import { IoMdShare } from "react-icons/io";
 import { MdDeleteOutline} from "react-icons/md";
-import { getFormatedDate, ytUrlToEmbed } from "../../utils/utils";
+import { getErrorMessage, getFormatedDate, ytUrlToEmbed } from "../../utils/utils";
 import React from "react";
 import { IoDocumentTextOutline, IoLinkOutline } from "react-icons/io5";
 import { FaYoutube } from "react-icons/fa6";
+import { useMutation } from "react-query";
+import deleteContentService from "../../services/deleteContentService";
+import { toast } from "react-toastify";
 
 type ContentType = "doc" | "video" | "link" | "tweet";
 
 export interface ContentCardProps {
-  contentType: ContentType;
+  _id: string;
+  type: ContentType;
   link: string;
-  cardTitle: string;
+  title: string;
   tags: string[];
   createdAt?: string;
 }
 
-function ContentCard(props: ContentCardProps) {
+interface ContentCardPropsWithRefresh extends ContentCardProps {
+  refresh : any
+}
+
+function ContentCard(props: ContentCardPropsWithRefresh) {
   function getIconFromType(contentType: ContentType): React.ReactNode {
     switch (contentType) {
       case "doc":
@@ -35,16 +43,38 @@ function ContentCard(props: ContentCardProps) {
     }
   }
 
+  function handleShareClick() {
+    window.open(props.link, "_blank");
+  }
+
+  const deleteMutation = useMutation(deleteContentService, {
+    onSuccess : (data) => {
+      console.log(data);
+      toast.success(data?.message || "Successful");
+      props.refresh();
+    },
+    onError :  (error) => {
+      toast.error(getErrorMessage(error));
+    }
+  });
+
+  function handleDeleteContent() {
+    const sure = confirm("Are you sure you want to delete this content?");
+    if (!sure) return;
+    deleteMutation.mutate(props._id);
+  }
+
   return (
     <div className="bg-white rounded-md max-h-[400px] overflow-y-scroll overflow-x-hidden w-full md:w-[280px] border border-gray-300 gap-2 flex flex-col text-gray-900 shadow-sm px-3 py-2">
       <div className="flex justify-between items-center mb-2">
         <div className="flex items-center text-base justify-start gap-2 leading-none font-semibold">
-          <div>{getIconFromType(props.contentType)}</div>
-          <p>{props.cardTitle || "Card Title"}</p>
+          <div>{getIconFromType(props.type)}</div>
+          <p>{props.title || "Card Title"}</p>
         </div>
         <div className="flex gap-1">
           <Button
             text=""
+            onClick={handleShareClick}
             startIcon={<IoMdShare />}
             variant="ghost"
             size="sm"
@@ -52,6 +82,7 @@ function ContentCard(props: ContentCardProps) {
           />
           <Button
             text=""
+            onClick={handleDeleteContent}
             startIcon={<MdDeleteOutline />}
             variant="ghost"
             size="sm"
@@ -61,7 +92,7 @@ function ContentCard(props: ContentCardProps) {
       </div>
 
       <div className="w-full rounded-sm">
-        {props?.contentType === "video" && (
+        {props?.type === "video" && (
           <iframe
             className="w-full"
             src={`${ytUrlToEmbed(props.link)}`}
@@ -72,13 +103,13 @@ function ContentCard(props: ContentCardProps) {
           ></iframe>
         )}
 
-        {props?.contentType === "tweet" && (
+        {props?.type === "tweet" && (
           <blockquote className="twitter-tweet">
             <a href={props.link.replace("x.com", "twitter.com")}></a>
           </blockquote>
         )}
 
-        {props?.contentType === "link" && (
+        {props?.type === "link" && (
           <div className="flex gap-2 flex-col">
             <p className="text-black font-bold">Link</p>
             <a
