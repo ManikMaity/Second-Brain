@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import e, { Request, Response } from "express";
 import { RequestUserWithUser } from "../middlewares/auth";
 import { createRandomString, handleErrorResponse } from "../utils/functions";
 import { CreateContentType } from "../validations/content.validation";
@@ -154,6 +154,29 @@ export async function getBrainController(
       data: content,
     });
   } catch (err) {
+    console.log(err);
+    handleErrorResponse(err, res);
+  }
+}
+
+
+export async function isLinkExistController(req : RequestUserWithUser, res : Response)  {
+  try {
+    //@ts-ignore
+    const userId = req.user?._id;
+    const link = await LinkModel.findOne({userId : userId});
+    const isExist = link ? true : false;
+
+    res.status(200).json({
+      success : true,
+      message : "Link fetched successfully",
+      data : {
+        exist : isExist,
+        link
+      }
+    })
+  }
+  catch(err : any){
     console.log(err);
     handleErrorResponse(err, res);
   }
