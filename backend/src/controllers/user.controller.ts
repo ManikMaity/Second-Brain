@@ -72,7 +72,7 @@ export async function signinController (req : Request, res : Response) {
         const {password : pass, ...userData} = user.toObject();
         
         const token = jwt.sign({id : user._id}, JWT_SECRET ?? "manikmaity", {expiresIn : "30d"});
-        res.status(400).json({
+        res.status(200).json({
             success : true,
             message : "User signed in successfully",
             data : {

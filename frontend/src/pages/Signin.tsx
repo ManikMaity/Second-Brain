@@ -34,6 +34,7 @@ function Signin() {
           email : data.data.user.email,
           _id : data.data.user._id
         }
+        localStorage.setItem("secondBrainToken", data.data.token);
         setUser(storeData); 
         setEmail("");
         setPassword("")
