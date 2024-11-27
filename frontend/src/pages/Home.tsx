@@ -14,6 +14,7 @@ import { toast } from "react-toastify";
 import { getErrorMessage } from "../utils/utils";
 
 function Home() {
+  
   const { data, isLoading, isError, isSuccess, refetch } = useQuery(
     ["content"],
     getAllContentService,
