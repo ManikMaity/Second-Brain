@@ -7,14 +7,15 @@ import Button from "../components/Buttons/Button";
 import { FaPlus } from "react-icons/fa6";
 import { IoMdShare } from "react-icons/io";
 import SpinnerLoader from "../components/Loaders/SpinnerLoader";
-import useUserStore from "../store/useStore";
 import { useQuery } from "react-query";
 import getAllContentService from "../services/getAllContentService";
 import { toast } from "react-toastify";
 import { getErrorMessage } from "../utils/utils";
+import { MdOutlineContentCopy, MdOutlineDelete } from "react-icons/md";
+import useShareBrain from "../hooks/useShareBrain";
+import { BACKEND_URL, CLIENT_URL } from "../config/clientConfig";
 
 function Home() {
-  
   const { data, isLoading, isError, isSuccess, refetch } = useQuery(
     ["content"],
     getAllContentService,
@@ -22,25 +23,38 @@ function Home() {
       staleTime: 10 * 60 * 1000,
       cacheTime: 10 * 60 * 1000,
       onError: (error) => {
-        toast.error(getErrorMessage(error))
-      }
+        toast.error(getErrorMessage(error));
+      },
     }
   );
 
   const [sidebarClosed, setSidebarClosed] = useState(false);
   const [openCreateModal, setOpenCreateModal] = useState(false);
-  const { user } = useUserStore();
-  console.log(user);
+  const {
+    linkData,
+    isLinkDataSuccess,
+    isLinkDataLoading,
+    isLinkDataError,
+    shareLinkHash,
+    handleBrainShare
+  } = useShareBrain();
+
+  console.log(linkData);
 
   function handleModelClose() {
     setOpenCreateModal(false);
+  }
+
+  function copyTextToClipboard(text: string) {
+    navigator.clipboard.writeText(text);
+    toast.success("Share Link Copied to clipboard");
   }
 
   return (
     <div className="h-screen w-full bg-gray-100 flex justify-end">
       {openCreateModal && (
         <ModelContainer onClose={handleModelClose}>
-          <AddContentModel refresh={refetch}/>
+          <AddContentModel refresh={refetch} />
         </ModelContainer>
       )}
       <Sidebar
@@ -64,25 +78,62 @@ function Home() {
               }}
               startIcon={<FaPlus />}
             />
-            <Button
-              text="Share Brain"
-              variant="secondary"
-              size="md"
-              onClick={() => {
-                alert("Hoi there");
-              }}
-              startIcon={<IoMdShare />}
-            />
+            {isLinkDataSuccess && linkData?.data?.exist ? (
+              <div className="flex gap-2">
+                <Button
+                  text="Remove Brain"
+                  variant="secondary"
+                  size="md"
+                  onClick={() => handleBrainShare(false)}
+                  startIcon={<MdOutlineDelete />}
+                />
+                <Button
+                  text=""
+                  variant="secondary"
+                  textHidden={true}
+                  onClick={() => copyTextToClipboard(CLIENT_URL +"/brain/" + shareLinkHash.current)}
+                  size="md"
+                  startIcon={<MdOutlineContentCopy />}
+                />
+              </div>
+            ) : (
+              <Button
+                text="Share Brain"
+                variant="secondary"
+                size="md"
+                onClick={() => handleBrainShare(true)}
+                startIcon={<IoMdShare />}
+              />
+            )}
           </div>
         </div>
-        {isLoading && <div className="w-full mt-12 md:mt-0 h-auto md:h-[92%] grid place-content-center">
-          <SpinnerLoader radius={12} color="#8b5cf6" />
-        </div>}
-        {isError && <div className="w-full mt-12 md:mt-0 h-auto md:h-[92%] grid place-content-center"><p className="text-base md:text-lg font-bold text-red-500">Something went wrong</p></div>}
+        {isLoading && (
+          <div className="w-full mt-12 md:mt-0 h-auto md:h-[92%] grid place-content-center">
+            <SpinnerLoader radius={12} color="#8b5cf6" />
+          </div>
+        )}
+        {isError && (
+          <div className="w-full mt-12 md:mt-0 h-auto md:h-[92%] grid place-content-center">
+            <p className="text-base md:text-lg font-bold text-red-500">
+              Something went wrong
+            </p>
+          </div>
+        )}
         {isSuccess && (
           <div className="w-full h-auto md:h-[92%] overflow-y-scroll gap-2 flex justify-center flex-wrap">
             {data?.data?.map((item: ContentCardProps) => {
-              return <ContentCard refresh={refetch} _id={item._id} key={item._id} type={item.type || "link"} title={item.title || "Untitled"} link={item.link || ""} tags={item.tags} createdAt={item.createdAt}/>
+              return (
+                <ContentCard
+                  refresh={refetch}
+                  _id={item._id}
+                  key={item._id}
+                  type={item.type || "link"}
+                  title={item.title || "Untitled"}
+                  link={item.link || ""}
+                  tags={item.tags}
+                  createdAt={item.createdAt}
+                />
+              );
             })}
           </div>
         )}
