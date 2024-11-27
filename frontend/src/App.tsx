@@ -7,6 +7,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { QueryClient, QueryClientProvider } from "react-query";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
+import Brain from "./pages/Brain";
 
 function App() {
   const queryClient = new QueryClient();
@@ -18,6 +19,7 @@ function App() {
           <Route element={<PrivateRoute />}>
             <Route path="/" element={<Home />} />
           </Route>
+          <Route path="/brain/:hash" element={<Brain />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/signin" element={<Signin />} />
         </Routes>
