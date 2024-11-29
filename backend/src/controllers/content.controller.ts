@@ -13,11 +13,25 @@ export async function getContentController(
   try {
     //@ts-ignore
     const userId = req.user?._id;
+    const dataType = req.query.type as
+      | "link"
+      | "tweet"
+      | "video"
+      | "doc"
+      | "all";
 
-    const userContents = await ContentModel.find({ user: userId }).sort({ createdAt: -1 }).populate(
-      "user",
-      "username"
-    );
+    let userContents;
+
+    if (!dataType || dataType === "all") {
+      userContents = await ContentModel.find({ user: userId })
+        .sort({ createdAt: -1 })
+        .populate("user", "username");
+    } else {
+      userContents = await ContentModel.find({ user: userId, type: dataType })
+        .sort({ createdAt: -1 })
+        .populate("user", "username");
+    }
+
     res.status(200).json({
       success: true,
       message: "Contents fetched successfully",
@@ -110,31 +124,33 @@ export async function brainShareController(
         success: true,
       });
     }
-  } catch (err : any) {
-    if (err.code == 11000){
+  } catch (err: any) {
+    if (err.code == 11000) {
       res.status(409).json({
-        success : false,
-        message : "Link already exists",
-        error : err.message
-      })
-    }
-    else {
+        success: false,
+        message: "Link already exists",
+        error: err.message,
+      });
+    } else {
       handleErrorResponse(err, res);
     }
   }
 }
 
-export async function getBrainController(
-  req: Request,
-  res: Response
-) {
+export async function getBrainController(req: Request, res: Response) {
   try {
     const shareLink = req.params.shareLink;
+    const dataType = req.query.type as
+      | "link"
+      | "tweet"
+      | "video"
+      | "doc"
+      | "all";
     const link = await LinkModel.findOne({ hash: shareLink });
     if (!link) {
       throw {
         statusCode: 404,
-        message: "Linked account not found",
+        message: "Brain not found",
       };
     }
 
@@ -147,13 +163,21 @@ export async function getBrainController(
       };
     }
 
-    const {password, ...creator} = brainUser.toObject();
+    const { password, ...creator } = brainUser.toObject();
 
-    const content = await ContentModel.find({ user: link.userId }).populate(
-      "user",
-      "username email"
-    );
-    
+    let content;
+    if (!dataType || dataType === "all") {
+      content = await ContentModel.find({ user: link.userId }).populate(
+        "user",
+        "username email"
+      );
+    } else {
+      content = await ContentModel.find({
+        user: link.userId,
+        type: dataType,
+      }).populate("user", "username email");
+    }
+
     if (!content) {
       throw {
         statusCode: 404,
@@ -166,7 +190,7 @@ export async function getBrainController(
       success: true,
       data: {
         creator,
-        content
+        content,
       },
     });
   } catch (err) {
@@ -175,24 +199,25 @@ export async function getBrainController(
   }
 }
 
-
-export async function isLinkExistController(req : RequestUserWithUser, res : Response)  {
+export async function isLinkExistController(
+  req: RequestUserWithUser,
+  res: Response
+) {
   try {
     //@ts-ignore
     const userId = req.user?._id;
-    const link = await LinkModel.findOne({userId : userId});
+    const link = await LinkModel.findOne({ userId: userId });
     const isExist = link ? true : false;
 
     res.status(200).json({
-      success : true,
-      message : "Link fetched successfully",
-      data : {
-        exist : isExist,
-        link
-      }
-    })
-  }
-  catch(err : any){
+      success: true,
+      message: "Link fetched successfully",
+      data: {
+        exist: isExist,
+        link,
+      },
+    });
+  } catch (err: any) {
     console.log(err);
     handleErrorResponse(err, res);
   }

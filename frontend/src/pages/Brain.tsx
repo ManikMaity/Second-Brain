@@ -3,8 +3,10 @@ import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import { getBrainDataService } from "../services/getBrainDataService";
 import Sidebar from "../components/Sidebar/Sidebar";
-import SpinnerLoader from "../components/Loaders/SpinnerLoader";
 import ContentCard, { ContentCardProps } from "../components/Cards/ContentCard";
+import TilesLoader from "../components/Loaders/TilesLoader";
+import { toast } from "react-toastify";
+import { getErrorMessage } from "../utils/utils";
 
 function Brain() {
   const { hash } = useParams();
@@ -16,9 +18,11 @@ function Brain() {
     {
       staleTime: 10 * 60 * 1000,
       cacheTime: 10 * 60 * 1000,
+      onError : (error) => {
+        toast.error(getErrorMessage(error));
+      }
     }
   );
-  console.log(data);
 
   return (
     <div className="h-screen w-screen flex justify-end">
@@ -32,12 +36,12 @@ function Brain() {
         } p-6 bg-gray-200`}
       >
         <div className="flex flex-col sm:flex-row justify-between h-[6%] sm:items-center gap-2 md:mb-4">
-          {isSuccess && <h1 className="font-bold text-xl md:text-2xl">Second Brain of <a href={`mailto:${data?.data?.creator?.email}`} className="hover:underline text-violet-600">{data?.data?.creator?.username}</a></h1>}
+          {isSuccess && <h1 className="font-bold text-xl md:text-2xl">Second Brain of <a href={`mailto:${data?.data?.creator?.email}`} target="_blank" className="hover:underline text-violet-600">{data?.data?.creator?.username}</a></h1>}
           </div>
         
           {isLoading && (
           <div className="w-full mt-12 md:mt-0 h-auto md:h-[92%] grid place-content-center">
-            <SpinnerLoader radius={12} color="#8b5cf6" />
+           <TilesLoader/>
           </div>
         )}
         {isError && (
