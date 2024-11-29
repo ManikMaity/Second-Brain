@@ -4,6 +4,7 @@ import { createRandomString, handleErrorResponse } from "../utils/functions";
 import { CreateContentType } from "../validations/content.validation";
 import ContentModel from "../schemas/content.schema";
 import { LinkModel } from "../schemas/link.schema";
+import UserModel from "../schemas/user.schema";
 
 export async function getContentController(
   req: RequestUserWithUser,
@@ -137,10 +138,22 @@ export async function getBrainController(
       };
     }
 
+    const brainUser = await UserModel.findById(link.userId);
+
+    if (!brainUser) {
+      throw {
+        statusCode: 404,
+        message: "User not found",
+      };
+    }
+
+    const {password, ...creator} = brainUser.toObject();
+
     const content = await ContentModel.find({ user: link.userId }).populate(
       "user",
       "username email"
     );
+    
     if (!content) {
       throw {
         statusCode: 404,
@@ -151,7 +164,10 @@ export async function getBrainController(
     res.json({
       message: "Content fetched successfully",
       success: true,
-      data: content,
+      data: {
+        creator,
+        content
+      },
     });
   } catch (err) {
     console.log(err);

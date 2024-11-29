@@ -120,7 +120,7 @@ function Home() {
           </div>
         )}
         {isSuccess && (
-          <div className="w-full h-auto md:h-[92%] overflow-y-scroll gap-2 flex justify-center flex-wrap">
+          <div className="w-full h-auto md:h-[92%] overflow-y-scroll gap-2 flex flex-wrap">
             {data?.data?.map((item: ContentCardProps) => {
               return (
                 <ContentCard

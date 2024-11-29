@@ -19,10 +19,11 @@ export interface ContentCardProps {
   title: string;
   tags: string[];
   createdAt?: string;
+  viewerCard ?: boolean
 }
 
 interface ContentCardPropsWithRefresh extends ContentCardProps {
-  refresh : any
+  refresh? : any
 }
 
 function ContentCard(props: ContentCardPropsWithRefresh) {
@@ -80,14 +81,14 @@ function ContentCard(props: ContentCardPropsWithRefresh) {
             size="sm"
             textHidden={true}
           />
-          <Button
+         {!props.viewerCard && <Button
             text=""
             onClick={handleDeleteContent}
             startIcon={<MdDeleteOutline />}
             variant="ghost"
             size="sm"
             textHidden={true}
-          />
+          />}
         </div>
       </div>
 
