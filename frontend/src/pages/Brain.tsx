@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import { getBrainDataService } from "../services/getBrainDataService";
@@ -11,10 +11,12 @@ import { getErrorMessage } from "../utils/utils";
 function Brain() {
   const { hash } = useParams();
   const [sidebarClosed, setSidebarClosed] = React.useState(false);
+  const [filterType, setFilterType] = useState("all");
+
 
   const { data, isLoading, isSuccess, isError } = useQuery(
-    ["brain", hash],
-    () => getBrainDataService(hash),
+    ["brain", hash, filterType],
+    () => getBrainDataService(hash, filterType),
     {
       staleTime: 10 * 60 * 1000,
       cacheTime: 10 * 60 * 1000,
@@ -29,6 +31,7 @@ function Brain() {
       <Sidebar
         closeSidebar={sidebarClosed}
         setCloseSidebar={setSidebarClosed}
+        setFilterType={setFilterType}
       />
       <div
         className={`h-screen transition-all duration-500 ${

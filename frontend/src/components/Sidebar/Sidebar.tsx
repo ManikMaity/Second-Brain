@@ -1,17 +1,17 @@
 import { LuBrain, LuPanelLeftClose, LuPanelRightClose } from "react-icons/lu";
 import Button from "../Buttons/Button";
-import { FaFileVideo, FaHashtag, FaLink, FaTwitter } from "react-icons/fa6";
+import { FaBookOpen, FaFileVideo, FaHashtag, FaLink, FaTwitter } from "react-icons/fa6";
 import { IoDocumentText } from "react-icons/io5";
 
-function Sidebar(props : any) {
+function Sidebar({closeSidebar, setCloseSidebar, setFilterType} : any) {
 
   return (
     <div className="h-screen md:w-[20%] bg-transparent absolute z-10 top-0 left-0">
-      {props.closeSidebar ? (
+      {closeSidebar ? (
         <Button
           text=""
           textHidden={true}
-          onClick={() => props.setCloseSidebar(false)}
+          onClick={() => setCloseSidebar(false)}
           variant="secondary"
           customStyle={{ fontSize: "1.5rem", padding: "2px" }}
           startIcon={<LuPanelRightClose />}
@@ -27,16 +27,27 @@ function Sidebar(props : any) {
               text=""
               variant="secondary"
               textHidden={true}
-              onClick={() => props.setCloseSidebar(true)}
+              onClick={() => setCloseSidebar(true)}
               customStyle={{ fontSize: "1.5rem", padding: "2px" }}
               startIcon={<LuPanelLeftClose />}
             />
           </div>
 
           <ul className="mt-6 flex flex-col gap-4">
+          <li>
+              <Button
+                text="All"
+                onClick={() => setFilterType("all")}
+                variant="ghost"
+                customStyle={{ width: "100%" }}
+                contentPosition="start"
+                startIcon={<FaBookOpen />}
+              />
+            </li>
             <li>
               <Button
                 text="Tweet"
+                onClick={() => setFilterType("tweet")}
                 variant="ghost"
                 customStyle={{ width: "100%" }}
                 contentPosition="start"
@@ -47,6 +58,7 @@ function Sidebar(props : any) {
               <Button
                 text="Videos"
                 variant="ghost"
+                onClick={() => setFilterType("video")}
                 customStyle={{ width: "100%" }}
                 contentPosition="start"
                 startIcon={<FaFileVideo />}
@@ -56,6 +68,7 @@ function Sidebar(props : any) {
               <Button
                 text="Documents"
                 variant="ghost"
+                onClick={() => setFilterType("doc")}
                 customStyle={{ width: "100%" }}
                 contentPosition="start"
                 startIcon={<IoDocumentText />}
@@ -65,6 +78,7 @@ function Sidebar(props : any) {
               <Button
                 text="Links"
                 variant="ghost"
+                onClick={() => setFilterType("link")}
                 customStyle={{ width: "100%" }}
                 contentPosition="start"
                 startIcon={<FaLink />}

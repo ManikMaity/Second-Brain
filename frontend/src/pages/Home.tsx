@@ -6,19 +6,21 @@ import Sidebar from "../components/Sidebar/Sidebar";
 import Button from "../components/Buttons/Button";
 import { FaPlus } from "react-icons/fa6";
 import { IoMdShare } from "react-icons/io";
-import SpinnerLoader from "../components/Loaders/SpinnerLoader";
 import { useQuery } from "react-query";
 import getAllContentService from "../services/getAllContentService";
 import { toast } from "react-toastify";
 import { getErrorMessage } from "../utils/utils";
 import { MdOutlineContentCopy, MdOutlineDelete } from "react-icons/md";
 import useShareBrain from "../hooks/useShareBrain";
-import { BACKEND_URL, CLIENT_URL } from "../config/clientConfig";
+import { CLIENT_URL } from "../config/clientConfig";
+import TilesLoader from "../components/Loaders/TilesLoader";
 
 function Home() {
+  const [filterType, setFilterType] = useState("all");
+
   const { data, isLoading, isError, isSuccess, refetch } = useQuery(
-    ["content"],
-    getAllContentService,
+    ["content", filterType],
+    () => getAllContentService(filterType),
     {
       staleTime: 10 * 60 * 1000,
       cacheTime: 10 * 60 * 1000,
@@ -60,6 +62,7 @@ function Home() {
       <Sidebar
         closeSidebar={sidebarClosed}
         setCloseSidebar={setSidebarClosed}
+        setFilterType={setFilterType}
       />
       <div
         className={`h-screen transition-all duration-500 ${
@@ -109,7 +112,7 @@ function Home() {
         </div>
         {isLoading && (
           <div className="w-full mt-12 md:mt-0 h-auto md:h-[92%] grid place-content-center">
-            <SpinnerLoader radius={12} color="#8b5cf6" />
+            <TilesLoader/>
           </div>
         )}
         {isError && (
