@@ -32,6 +32,7 @@ function Brain() {
         closeSidebar={sidebarClosed}
         setCloseSidebar={setSidebarClosed}
         setFilterType={setFilterType}
+        isViewer={true}
       />
       <div
         className={`h-screen transition-all duration-500 ${
