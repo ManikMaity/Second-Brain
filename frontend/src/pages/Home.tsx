@@ -37,8 +37,6 @@ function Home() {
   const {
     linkData,
     isLinkDataSuccess,
-    isLinkDataLoading,
-    isLinkDataError,
     shareLinkHash,
     handleBrainShare
   } = useShareBrain();
