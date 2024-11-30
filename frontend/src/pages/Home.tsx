@@ -14,12 +14,14 @@ import { MdOutlineContentCopy, MdOutlineDelete } from "react-icons/md";
 import useShareBrain from "../hooks/useShareBrain";
 import { CLIENT_URL } from "../config/clientConfig";
 import TilesLoader from "../components/Loaders/TilesLoader";
+import useUserStore from "../store/useStore";
 
 function Home() {
   const [filterType, setFilterType] = useState("all");
 
+  const {user} = useUserStore();
   const { data, isLoading, isError, isSuccess, refetch } = useQuery(
-    ["content", filterType],
+    ["content", filterType, user?._id],
     () => getAllContentService(filterType),
     {
       staleTime: 10 * 60 * 1000,
