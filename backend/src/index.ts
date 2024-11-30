@@ -9,7 +9,7 @@ import cors from "cors";
 
 const app = express();
 app.use(cors({
-  origin : CLIENT_URL,
+  origin : `${CLIENT_URL}`,
   credentials : true
 }))
 app.use(express.json());
