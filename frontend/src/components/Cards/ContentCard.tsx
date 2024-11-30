@@ -23,6 +23,7 @@ export interface ContentCardProps {
 }
 
 interface ContentCardPropsWithRefresh extends ContentCardProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   refresh? : any
 }
 

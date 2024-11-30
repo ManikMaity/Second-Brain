@@ -16,6 +16,7 @@ function Sidebar({
   setCloseSidebar,
   setFilterType,
   isViewer = false,
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 }: any) {
   const { setUser } = useUserStore();
 
