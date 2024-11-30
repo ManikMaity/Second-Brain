@@ -6,6 +6,7 @@ import { QueryObserverResult, RefetchOptions, RefetchQueryFilters, useMutation }
 import addContentService from "../../services/addContentService";
 import { toast } from "react-toastify";
 import { getErrorMessage } from "../../utils/utils";
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function AddContentModel(props : {refresh : <TPageData>(options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined) => Promise<QueryObserverResult<any, unknown>>}) {
 
 

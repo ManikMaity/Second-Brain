@@ -1,4 +1,3 @@
-import React from "react";
 
 function SpinnerLoader({radius, color} : {radius?: number, color?: string}) {
   return (

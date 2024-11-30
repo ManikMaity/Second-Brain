@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import ContentCard, { ContentCardProps } from "../components/Cards/ContentCard";
 import ModelContainer from "../components/Models/ModelContainer";
 import AddContentModel from "../components/Models/AddContentModel";

@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
 import { useMutation, useQuery } from "react-query";
 import shareBrainService from "../services/shareBrainService";
 import { toast } from "react-toastify";

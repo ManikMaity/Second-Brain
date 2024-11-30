@@ -1,8 +1,8 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
-import Home from "./pages/home";
-import Signin from "./pages/signin";
-import Signup from "./pages/signup";
+import Home from "./pages/Home";
+import Signin from "./pages/Signin";
+import Signup from "./pages/Signup";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { QueryClient, QueryClientProvider } from "react-query";
@@ -34,7 +34,6 @@ function App() {
           draggable
           pauseOnHover
           theme="colored"
-          transition:Bounce
         />
       </BrowserRouter>
     </QueryClientProvider>
