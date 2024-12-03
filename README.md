@@ -33,7 +33,7 @@
 
 <img src="./public/filterSection.png"/>
 
-### Shared Brain Page 
+### Shared Brain Page
 
 <img src="./public/sharedBrainPage.png"/>
 
@@ -51,7 +51,7 @@
 
 Framework & Routing: `ReactJS`, `React Router`  
 State Management: `Zustand`, `React Query`  
-Styling: `TailwindCSS` 
+Styling: `TailwindCSS`
 Notifications & Icons: `React-Toastify`, `React Icons`
 
 ### Backend
@@ -76,8 +76,8 @@ API Communication: `Axios`
 1. Clone the Repository
 
    ```bash
-   git clone https://github.com/ManikMaity/LivePoll.git
-   cd LivePoll
+   git clone https://github.com/ManikMaity/Second-Brain.git
+   cd Second-Brain
    ```
 
 2. Backend Setup
@@ -92,12 +92,12 @@ API Communication: `Axios`
      ```
    - Create a `.env` file and add the following:
      `env
-    PORT=3000
-    DB_CONNECTION="your mongodb url" 
-    SALT_ROUNDS=6
-    JWT_PRIVATE="your jwt private key"
-    CLIENT_URL="your client url"
-     `
+PORT=3000
+DB_URL="mongodb url"
+JWT_SECRET=""
+SALT="number of salt"
+CLIENT_URL="deployed frontend url"
+ `
    - Start the server:
      ```bash
      npm run dev
@@ -113,31 +113,21 @@ API Communication: `Axios`
      ```bash
      npm install
      ```
-   - Update `.env` file with the backend URL (e.g., `http://localhost:3000`).
+   - Update `src/configs/clientConfig.ts` file.
+
+   ```ts
+   export const BACKEND_URL: string = "";
+   export const CLIENT_URL: string = "";
+   ```
+
    - Start the development server:
      ```bash
-     npm start
+     npm run dev
      ```
 
 4. Access the Application
    - Open a browser and go to `http://localhost:5173`.
 
----
-
-### To Switch Between Local and Deployed Environments
-
-- Update backend `.env` with:
-  ```env
-  BACKEND_URL=http://localhost:3000
-  ```
-- Update frontend Axios base URL to:
-  ```javascript
-  axios.defaults.baseURL = "http://localhost:3000/api/v1";
-  ```
-- Update the Socket.io URL in the voting page:
-  ```javascript
-  const socket = io("http://localhost:3000");
-  ```
 
 ---
 
