@@ -17,7 +17,7 @@
 
 ## Links
 
-- [Live Website](https://second-brain-client.vercel.app/) - Loading time may take few seconds initially (free tier).
+- [Live Website](https://secondbrain.manikmaity.com/)
 
 ## Preview Images
 
@@ -81,7 +81,6 @@ API Communication: `Axios`
    ```
 
 2. Backend Setup
-
    - Navigate to the backend directory:
      ```bash
      cd backend
@@ -104,7 +103,6 @@ CLIENT_URL="deployed frontend url"
      ```
 
 3. Frontend Setup
-
    - Navigate to the frontend directory:
      ```bash
      cd frontend
@@ -127,7 +125,6 @@ CLIENT_URL="deployed frontend url"
 
 4. Access the Application
    - Open a browser and go to `http://localhost:5173`.
-
 
 ---
 
