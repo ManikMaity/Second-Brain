@@ -1,4 +1,4 @@
-import axiosInstance from "../helper/axiosInstance";
+import axiosInstance from "../config/helper/axiosInstance";
 
 async function shareBrainService(shareBrain: boolean) {
   const response = await axiosInstance.post(
@@ -11,11 +11,10 @@ async function shareBrainService(shareBrain: boolean) {
         "Content-Type": "application/json",
         token: localStorage.getItem("secondBrainToken") || "",
       },
-    }
+    },
   );
 
   return response.data;
 }
-
 
 export default shareBrainService;

@@ -1,14 +1,14 @@
-import axiosInstance from "../helper/axiosInstance"
+import axiosInstance from "../config/helper/axiosInstance";
 
 async function getLinkDataService() {
   const resposne = await axiosInstance.get("/brain/exits", {
-    headers : {
-        "Content-Type": "application/json",
-        token : localStorage.getItem("secondBrainToken") || "",
-    }
-  })
+    headers: {
+      "Content-Type": "application/json",
+      token: localStorage.getItem("secondBrainToken") || "",
+    },
+  });
 
   return resposne.data;
 }
 
-export default getLinkDataService
+export default getLinkDataService;

@@ -1,4 +1,4 @@
-import axiosInstance from "../helper/axiosInstance";
+import axiosInstance from "../config/helper/axiosInstance";
 
 interface ContentType {
   title: string;
